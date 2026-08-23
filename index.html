@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Formel-Trainer | Industriemeister NTG</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -421,10 +421,68 @@ function getPool(filter){
   }
   return out;
 }
+function getStepExplanation(h) {
+  if (!h) return "";
+  var clean = h.replace(" → fertig!", "").replace("Beide Seiten ", "").trim();
+  if (clean === "Ausgangsformel") {
+    return "Wir starten mit der ursprünglichen Formel.";
+  }
+  if (clean === "Seiten tauschen") {
+    return "Wir spiegeln die Gleichung (linke und rechte Seite tauschen), damit die gesuchte Variable links steht.";
+  }
+  if (clean === "Wurzel ziehen") {
+    return "Da die gesuchte Variable als Quadrat vorliegt, ziehen wir die Wurzel auf beiden Seiten (Gegenoperation zu ²).";
+  }
+  if (clean === "Quadrieren") {
+    return "Da die gesuchte Variable unter einer Wurzel steht, quadrieren wir beide Seiten der Gleichung (Gegenoperation zur Wurzel).";
+  }
+  if (clean === "Kehrwert bilden" || clean.indexOf("Kehrwert") === 0) {
+    return "Wir bilden auf beiden Seiten den Kehrwert, damit die gesuchte Variable aus dem Nenner in den Zähler wandert.";
+  }
+  if (clean === "Kreuzweise multiplizieren") {
+    return "Wir multiplizieren über Kreuz, um beide Brüche aufzulösen (Zähler A * Nenner B = Zähler B * Nenner A).";
+  }
+  if (clean.indexOf("ausklammern") !== -1) {
+    return "Wir klammern die gesuchte Variable aus, um sie aus mehreren Summanden in einen einzigen Faktor zusammenzufassen.";
+  }
+  if (clean === "Ausgangsformel umformen" || clean === "Umsortieren") {
+    return "Wir sortieren die Terme um oder vereinfachen die Struktur, um das Umstellen vorzubereiten.";
+  }
+  var mMult = clean.match(/^Mit (.+) multiplizieren$/i);
+  if (mMult) {
+    return "Wir multiplizieren beide Seiten mit <strong>" + mMult[1] + "</strong>, um den Bruch aufzulösen, da die Variable oder der Term im Nenner steht (Gegenoperation zu geteilt durch).";
+  }
+  var mDiv = clean.match(/^Durch (.+) dividieren$/i);
+  if (mDiv) {
+    return "Wir teilen beide Seiten durch <strong>" + mDiv[1] + "</strong>, um die gesuchte Variable zu isolieren (Gegenoperation zu mal).";
+  }
+  var mMultDiv = clean.match(/^Mit (.+) multiplizieren & durch (.+) dividieren$/i);
+  if (mMultDiv) {
+    return "Wir multiplizieren mit <strong>" + mMultDiv[1] + "</strong> (um den Nenner aufzulösen) und teilen durch <strong>" + mMultDiv[2] + "</strong> (um die Variable zu isolieren).";
+  }
+  var mAdd = clean.match(/^(.+) addieren$/i);
+  if (mAdd) {
+    return "Wir addieren <strong>" + mAdd[1] + "</strong> auf beiden Seiten, da es auf der Seite der gesuchten Variable subtrahiert wird (Gegenoperation zu minus).";
+  }
+  var mSub = clean.match(/^(.+) subtrahieren$/i);
+  if (mSub) {
+    return "Wir subtrahieren <strong>" + mSub[1] + "</strong> auf beiden Seiten, da es auf der Seite der gesuchten Variable addiert wird (Gegenoperation zu plus).";
+  }
+  return "";
+}
 function renderStepsHTML(rea){
   var h="<div class=\"result-box\"><div class=\"result-label\">Umgeformte Formel</div><div style=\"font-size:1.18rem;text-align:center\">"+texD(rea.res)+"</div></div>";
   h+="<div style=\"font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.32rem\">L\u00f6sungsweg</div><div class=\"steps-wrap\">";
-  for(var i=0;i<rea.steps.length;i++){var st=rea.steps[i];h+="<div class=\"step\"><div class=\"step-num\">"+(i+1)+"</div><div><div class=\"step-eq\">"+tex(st.eq)+"</div><div class=\"step-hint\">"+st.h+"</div></div></div>";}
+  for(var i=0;i<rea.steps.length;i++){
+    var st=rea.steps[i];
+    var exp=getStepExplanation(st.h);
+    h+="<div class=\"step\"><div class=\"step-num\">"+(i+1)+"</div><div style=\"flex:1\"><div class=\"step-eq\">"+tex(st.eq)+"</div>";
+    h+="<div class=\"step-hint\" style=\"font-weight:600;color:var(--blue);font-style:normal;margin-bottom:.1rem\">Operation: "+st.h+"</div>";
+    if(exp){
+      h+="<div class=\"step-explain\" style=\"font-size:.75rem;color:var(--muted);line-height:1.4;margin-top:.15rem\"><strong>Erklärung:</strong> "+exp+"</div>";
+    }
+    h+="</div></div>";
+  }
   return h+"</div>";
 }
 function showScreen(name){
