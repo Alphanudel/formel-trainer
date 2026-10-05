@@ -129,10 +129,11 @@ main{max-width:960px;margin:0 auto;padding:1.75rem 1rem}.screen{display:none}.sc
 </div><div id="learn-grid"></div></div>
 <div id="screen-terms" class="screen">
 <h2 class="section-title">&#129518; Terme &amp; Bruchterme</h2>
-<p class="section-sub">Grundregeln der Algebra f&uuml;r NTG: Terme zusammenfassen, Br&uuml;che k&uuml;rzen, Summenbr&uuml;che aufteilen und Bruchteile multiplizieren.</p>
+<p class="section-sub">Grundregeln der Algebra f&uuml;r NTG: Grundlagen, Terme zusammenfassen, Br&uuml;che k&uuml;rzen, Summenbr&uuml;che aufteilen und Multiplikation.</p>
 <div class="filter-bar" id="terms-filter-bar">
 <span style="font-size:.76rem;color:var(--muted)">Kategorie:</span>
 <button class="filter-btn active" onclick="setTermsFilter('all',this)">Alle Aufgaben</button>
+<button class="filter-btn" onclick="setTermsFilter('basics',this)">&#128035; Einfache Grundlagen</button>
 <button class="filter-btn" onclick="setTermsFilter('simplify',this)">Terme zusammenfassen</button>
 <button class="filter-btn" onclick="setTermsFilter('cancel',this)">Bruchterme k&uuml;rzen</button>
 <button class="filter-btn" onclick="setTermsFilter('split',this)">Summenbr&uuml;che aufteilen</button>
@@ -144,13 +145,8 @@ main{max-width:960px;margin:0 auto;padding:1.75rem 1rem}.screen{display:none}.sc
 <div class="ans-grid" id="trm-answers"></div>
 <div class="feedback" id="trm-feedback"><div class="feedback-title" id="trm-fb-title"></div><div id="trm-fb-steps"></div></div>
 <button class="next-btn" id="trm-next" onclick="nextTermsQ()">N&auml;chste Aufgabe &rarr;</button></div>
-<div style="margin-top:1.4rem" class="rules-section">
-<div class="rules-section-title">&#128218; Schnell-Erkl&auml;rungen zu den 4 Grundregeln</div>
-<div class="rule-card"><div class="rule-card-title">&#10133; 1. Terme vereinfachen &amp; zusammenfassen</div><p style="font-size:.84rem;color:var(--muted);margin-bottom:.5rem">Nur gleichartige Variablen mit gleichen Exponenten k&ouml;nnen addiert/subtrahiert werden. Punkt- vor Strichrechnung und Klammerregeln (Minusklammern!) beachten.</p><div class="rule-example"><div class="rule-before">3(2x - y) + 4x</div><div class="rule-arrow">&rArr;</div><div class="rule-after">6x - 3y + 4x = 10x - 3y</div></div></div>
-<div class="rule-card"><div class="rule-card-title">&#9986; 2. Bruchterme k&uuml;rzen &amp; vereinfachen</div><p style="font-size:.84rem;color:var(--muted);margin-bottom:.5rem"><strong>Aus Multiplikationen (Produkten) darf gek&uuml;rzt werden!</strong> Z&auml;hler und Nenner werden durch gemeinsame Faktoren geteilt.</p><div class="rule-example"><div class="rule-before">\\dfrac{49xy}{7y}</div><div class="rule-arrow">&rArr;</div><div class="rule-after">\\dfrac{49}{7} \\cdot x \\cdot \\dfrac{y}{y} = 7x</div></div></div>
-<div class="rule-card"><div class="rule-card-title">&#10134; 3. Summenbr&uuml;che aufteilen &amp; k&uuml;rzen</div><p style="font-size:.84rem;color:var(--muted);margin-bottom:.5rem"><strong>Aus Summen darf niemals direkt gek&uuml;rzt werden!</strong> Stattdessen wird der Bruch entweder aufgeteilt (\\( \\frac{a+b}{c} = \\frac{a}{c} + \\frac{b}{c} \\)) oder ein gemeinsamer Faktor ausgeklammert.</p><div class="rule-example"><div class="rule-before">\\dfrac{2x + y}{x}</div><div class="rule-arrow">&rArr;</div><div class="rule-after">\\dfrac{2x}{x} + \\dfrac{y}{x} = 2 + \\dfrac{y}{x}</div></div></div>
-<div class="rule-card"><div class="rule-card-title">&#10006; 4. Multiplikation von Br&uuml;chen &amp; Variablen</div><p style="font-size:.84rem;color:var(--muted);margin-bottom:.5rem">Ein Bruch wird mit einer Zahl/Variable multipliziert, indem man den Z&auml;hler multipliziert oder mit dem Nenner k&uuml;rzt: \\( \\frac{a}{b} \\cdot c = \\frac{a \\cdot c}{b} \\).</p><div class="rule-example"><div class="rule-before">\\dfrac{4x}{5} \\cdot 10</div><div class="rule-arrow">&rArr;</div><div class="rule-after">4x \\cdot \\dfrac{10}{5} = 4x \\cdot 2 = 8x</div></div></div>
-</div></div>
+<div id="terms-rules-content" style="margin-top:1.6rem"></div>
+</div>
 <div id="screen-rules" class="screen"><h2 class="section-title">&#128203; Regeln zum Formelumstellen</h2><p class="section-sub">Methoden und Strategien f&uuml;r die IHK NTG Pr&uuml;fung.</p><div id="rules-content"></div></div>
 <div id="screen-practice" class="screen">
 <h2 class="section-title">&Uuml;bungsmodus (NTG)</h2>
@@ -400,6 +396,18 @@ vars:[{s:"F",d:"Kraft",u:"N"},{s:"m",d:"Masse",u:"kg"},{s:"a",d:"Beschleunigung"
 {sf:"V_{ges}",res:"V_{ges} = \\dfrac{V_1}{\\varphi}",dis:["V_{ges} = V_1 \\cdot \\varphi","V_{ges} = \\dfrac{\\varphi}{V_1}","V_{ges} = V_1 - \\varphi"],steps:[{eq:"\\varphi = \\dfrac{V_1}{V_{ges}}",h:"Ausgangsformel"},{eq:"V_{ges} = \\dfrac{V_1}{\\varphi}",h:"Durch \u03c6 dividieren \u2192 fertig!"}]}]}
 ];
 var TERMS_DB = [
+{id:"bas_1",cat:"basics",catName:"Einfache Grundlagen",task:"3x + 2x",prompt:"Grundprinzip Addition: Fasse die gleichartigen Variablen zusammen:",res:"5x",dis:["5x^2","6x","5"],hint:"Gleichartige Terme haben dieselbe Variable. Du rechnest nur die Zahlen davor zusammen: 3 + 2 = 5, die Variable x bleibt unver\u00e4ndert.",steps:[{eq:"3x + 2x",h:"Ausgangsaufgabe"},{eq:"(3 + 2) \\cdot x",h:"Koeffizienten (Zahlen) addieren"},{eq:"5x",h:"Endergebnis \u2192 fertig!"}]},
+{id:"bas_2",cat:"basics",catName:"Einfache Grundlagen",task:"7a - 4a",prompt:"Grundprinzip Subtraktion: Ziehe die Koeffizienten voneinander ab:",res:"3a",dis:["3","11a","3a^2"],hint:"Gleiche Variable a: Rechne 7 - 4 = 3. Das a wird einfach angeh\u00e4ngt.",steps:[{eq:"7a - 4a",h:"Ausgangsaufgabe"},{eq:"(7 - 4) \\cdot a",h:"Zahlen voneinander abziehen"},{eq:"3a",h:"Endergebnis \u2192 fertig!"}]},
+{id:"bas_3",cat:"basics",catName:"Einfache Grundlagen",task:"2 \\cdot 4x",prompt:"Grundprinzip Multiplikation Zahl \u00d7 Term:",res:"8x",dis:["8x^2","6x","8"],hint:"Multipliziere die Zahl 2 mit der Zahl 4: 2 \u00b7 4 = 8. Das x bleibt einfach als Faktor stehen.",steps:[{eq:"2 \\cdot 4x",h:"Ausgangsaufgabe"},{eq:"(2 \\cdot 4) \\cdot x",h:"Zahlen multiplizieren"},{eq:"8x",h:"Endergebnis \u2192 fertig!"}]},
+{id:"bas_4",cat:"basics",catName:"Einfache Grundlagen",task:"\\dfrac{6x}{2}",prompt:"Grundprinzip Zahl im Bruch k&uuml;rzen:",res:"3x",dis:["3","4x","12x"],hint:"Teile die Zahl im Z\u00e4hler durch die Zahl im Nenner: 6 / 2 = 3. Das x bleibt unver\u00e4ndert.",steps:[{eq:"\\dfrac{6x}{2}",h:"Ausgangsbruch"},{eq:"\\dfrac{6}{2} \\cdot x",h:"Zahl und Variable trennen"},{eq:"3 \\cdot x = 3x",h:"6 geteilt durch 2 = 3 \u2192 fertig!"}]},
+{id:"bas_5",cat:"basics",catName:"Einfache Grundlagen",task:"\\dfrac{8a}{4a}",prompt:"Grundprinzip Variable wegk&uuml;rzen:",res:"2",dis:["2a","2a^2","4"],hint:"8 geteilt durch 4 = 2. Da im Z\u00e4hler und Nenner das gleiche a steht, k\u00fcrzt sich a/a = 1 vollst\u00e4ndig weg!",steps:[{eq:"\\dfrac{8a}{4a}",h:"Ausgangsbruch"},{eq:"\\dfrac{8}{4} \\cdot \\dfrac{a}{a}",h:"Zahlen und Variable trennen"},{eq:"2 \\cdot 1 = 2",h:"8/4 = 2 und a/a = 1 \u2192 fertig!"}]},
+{id:"bas_6",cat:"basics",catName:"Einfache Grundlagen",task:"\\dfrac{x^2}{x}",prompt:"Grundprinzip Potenzen k&uuml;rzen:",res:"x",dis:["x^2","1","2x"],hint:"x\u00b2 bedeutet x \u00b7 x. Geteilt durch x k\u00fcrzt sich ein x weg: (x \u00b7 x) / x = x.",steps:[{eq:"\\dfrac{x^2}{x}",h:"Ausgangsbruch"},{eq:"\\dfrac{x \\cdot x}{x}",h:"Potenz als Multiplikation ausschreiben"},{eq:"x",h:"Ein x wegk\u00fcrzen \u2192 fertig!"}]},
+{id:"bas_7",cat:"basics",catName:"Einfache Grundlagen",task:"2(x + 4)",prompt:"Grundprinzip Klammer ausmultiplizieren (Distributivgesetz):",res:"2x + 8",dis:["2x + 4","x + 8","2x + 6"],hint:"Die Zahl vor der Klammer muss mit JEDEM Teil in der Klammer multipliziert werden: 2 \u00b7 x + 2 \u00b7 4 = 2x + 8.",steps:[{eq:"2(x + 4)",h:"Ausgangsterm"},{eq:"2 \\cdot x + 2 \\cdot 4",h:"Jedes Glied mit 2 multiplizieren"},{eq:"2x + 8",h:"Ausgerechnet \u2192 fertig!"}]},
+{id:"bas_8",cat:"basics",catName:"Einfache Grundlagen",task:"-(x - 5)",prompt:"Grundprinzip Minusklammer aufl&ouml;sen:",res:"-x + 5",dis:["-x - 5","x - 5","x + 5"],hint:"Ein Minus vor der Klammer kehrt alle Vorzeichen in der Klammer um: aus +x wird -x und aus -5 wird +5.",steps:[{eq:"-(x - 5)",h:"Ausgangsterm mit Minusklammer"},{eq:"-1 \\cdot (x - 5)",h:"Minus bedeutet Multiplikation mit -1"},{eq:"-x + 5",h:"Vorzeichen umgekehrt \u2192 fertig!"}]},
+{id:"bas_9",cat:"basics",catName:"Einfache Grundlagen",task:"\\dfrac{4 + 2x}{2}",prompt:"Grundprinzip Summenbruch gliedweise teilen:",res:"2 + x",dis:["2 + 2x","4 + x","2x"],hint:"Teile BEIDE Summanden im Z\u00e4hler durch 2: 4/2 + 2x/2 = 2 + x.",steps:[{eq:"\\dfrac{4 + 2x}{2}",h:"Ausgangsbruch"},{eq:"\\dfrac{4}{2} + \\dfrac{2x}{2}",h:"Gliedweise aufteilen (jeden Teil durch 2)"},{eq:"2 + x",h:"Beide Br\u00fcche k\u00fcrzen: 4/2 = 2 und 2x/2 = x \u2192 fertig!"}]},
+{id:"bas_10",cat:"basics",catName:"Einfache Grundlagen",task:"\\dfrac{x}{3} \\cdot 6",prompt:"Grundprinzip Bruch mit Zahl multiplizieren:",res:"2x",dis:["6x","\\dfrac{2x}{3}","2"],hint:"K\u00fcrze 6 durch den Nenner 3: 6 / 3 = 2. Dann 2 \u00b7 x = 2x.",steps:[{eq:"\\dfrac{x}{3} \\cdot 6",h:"Ausgangsaufgabe"},{eq:"x \\cdot \\dfrac{6}{3}",h:"6 mit dem Nenner verrechnen"},{eq:"x \\cdot 2 = 2x",h:"6 / 3 = 2 \u2192 fertig!"}]},
+{id:"bas_11",cat:"basics",catName:"Einfache Grundlagen",task:"\\dfrac{5}{x} \\cdot x",prompt:"Grundprinzip Variable im Nenner aufheben:",res:"5",dis:["5x","\\dfrac{5}{x^2}","5x^2"],hint:"Die Variable x im Nenner und das multiplizierte x k\u00fcrzen sich gegenseitig weg: (5 \u00b7 x) / x = 5.",steps:[{eq:"\\dfrac{5}{x} \\cdot x",h:"Ausgangsaufgabe"},{eq:"\\dfrac{5 \\cdot x}{x}",h:"Auf einen gemeinsamen Bruchstrich schreiben"},{eq:"5",h:"x k\u00fcrzen \u2192 fertig!"}]},
+{id:"bas_12",cat:"basics",catName:"Einfache Grundlagen",task:"5x + 3y - 2x",prompt:"Grundprinzip Verschiedene Variablen:",res:"3x + 3y",dis:["6xy","8x + y","3x - 3y"],hint:"Verrechne nur die x-Terme miteinander (5x - 2x = 3x). Das +3y bleibt einfach stehen, da man x und y nicht zusammenz\u00e4hlen kann (\u00c4pfel und Birnen).",steps:[{eq:"5x + 3y - 2x",h:"Ausgangsterm"},{eq:"(5x - 2x) + 3y",h:"Gleichartige Variablen sortieren"},{eq:"3x + 3y",h:"Zusammenfassen \u2192 fertig!"}]},
 {id:"sim_1",cat:"simplify",catName:"Terme zusammenfassen",task:"4a + 7b - 2a + 3b",prompt:"Fasse den Term so weit wie m&ouml;glich zusammen:",res:"2a + 10b",dis:["6a + 10b","2a + 4b","12ab"],hint:"Fasse gleichartige Variablen zusammen: (4a - 2a) + (7b + 3b).",steps:[{eq:"4a + 7b - 2a + 3b",h:"Ausgangsterm"},{eq:"(4a - 2a) + (7b + 3b)",h:"Gleichartige Terme sortieren"},{eq:"2a + 10b",h:"Zusammenfassen \u2192 fertig!"}]},
 {id:"sim_2",cat:"simplify",catName:"Terme zusammenfassen",task:"3(2x - 5y) + 4(x + 2y)",prompt:"Klammern aufl&ouml;sen und zusammenfassen:",res:"10x - 7y",dis:["10x - 15y","6x - 7y","10x + 7y"],hint:"Multipliziere zuerst die Klammern aus: 3\u00b7(2x-5y) = 6x-15y und 4\u00b7(x+2y) = 4x+8y.",steps:[{eq:"3(2x - 5y) + 4(x + 2y)",h:"Ausgangsterm"},{eq:"6x - 15y + 4x + 8y",h:"Klammern ausmultiplizieren"},{eq:"(6x + 4x) + (-15y + 8y)",h:"Sortieren"},{eq:"10x - 7y",h:"Zusammenfassen \u2192 fertig!"}]},
 {id:"sim_3",cat:"simplify",catName:"Terme zusammenfassen",task:"5x^2 - 3x + 2x^2 + 7x - 4",prompt:"Fasse den Term zusammen:",res:"7x^2 + 4x - 4",dis:["7x^2 + 10x - 4","14x^2 - 4","7x^2 - 4x - 4"],hint:"Potenzen mit gleichem Exponenten d\u00fcrfen zusammengefasst werden: (5x\u00b2 + 2x\u00b2) und (-3x + 7x).",steps:[{eq:"5x^2 - 3x + 2x^2 + 7x - 4",h:"Ausgangsterm"},{eq:"(5x^2 + 2x^2) + (-3x + 7x) - 4",h:"Potenzen sortieren"},{eq:"7x^2 + 4x - 4",h:"Zusammenfassen \u2192 fertig!"}]},
@@ -502,7 +510,7 @@ function showScreen(name){
   var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");
   var btn=document.querySelector(".nav-btn[data-screen=\""+name+"\"]");if(btn)btn.classList.add("active");
   if(name==="learn")renderLearn();
-  else if(name==="terms"){if(!ST.termsQuestion)renderTermsQ();}
+  else if(name==="terms"){if(!ST.termsQuestion)renderTermsQ();renderTermsRulesPage();}
   else if(name==="rules")renderRulesPage();
   else if(name==="practice"){if(!ST.practiceQuestion)renderPracticeQ();}
   else if(name==="test"){if(ST.testQuestions.length===0)backToSetup();}
@@ -623,6 +631,36 @@ function selectTermsAns(idx){
   if(item)recordAnswer("terms_"+item.cat,"terms",correct);
 }
 function nextTermsQ(){renderTermsQ();}
+function renderTermsRulesPage(){
+  var el=document.getElementById("terms-rules-content");if(!el)return;
+  var h="";
+  h+="<div class=\"rules-section\"><div class=\"rules-section-title\">&#128218; Schritt-f\u00fcr-Schritt Grundkurs: Die 5 Rechenregeln</div>";
+  h+="<div class=\"rule-card\"><div class=\"rule-card-title\">&#128035; 1. Grundprinzip: Was sind Variablen und wie werden sie addiert?</div>";
+  h+="<p style=\"font-size:.85rem;color:var(--muted);margin-bottom:.55rem\">Eine Variable (z.B. "+tex("x")+" oder "+tex("a")+") ist ein Platzhalter f\u00fcr eine Zahl. Nur <strong>gleichartige Variablen</strong> k\u00f6nnen addiert werden (&Auml;pfel und Birnen).</p>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+tex("3x + 2x")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+tex("(3 + 2)x = 5x")+"</div><div class=\"rule-action\">Gleiche Variable x addieren</div></div>";
+  h+="<div class=\"warn-box\"><div class=\"warn-box-title\">&#9888; H\u00e4ufiger Fehler</div><p style=\"font-size:.82rem\">"+tex("3x + 2y")+" kann <strong>nicht</strong> zu "+tex("5xy")+" zusammengefasst werden! "+tex("3x + 2y")+" bleibt einfach so stehen.</p></div></div>";
+  h+="<div class=\"rule-card\"><div class=\"rule-card-title\">&#10133; 2. Terme vereinfachen &amp; Klammern aufl\u00f6sen</div>";
+  h+="<p style=\"font-size:.85rem;color:var(--muted);margin-bottom:.55rem\">Multipliziere jeden Summanden in der Klammer mit dem Faktor davor. Achte besonders auf Minusklammern!</p>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+tex("2(x + 4)")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+tex("2 \\cdot x + 2 \\cdot 4 = 2x + 8")+"</div><div class=\"rule-action\">Distributivgesetz</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+tex("-(x - 5)")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+tex("-x + 5")+"</div><div class=\"rule-action\">Minus dreht alle Vorzeichen</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+tex("3(2x - 5y) + 4(x + 2y)")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+tex("6x - 15y + 4x + 8y = 10x - 7y")+"</div><div class=\"rule-action\">Komplettes Beispiel</div></div></div>";
+  h+="<div class=\"rule-card\"><div class=\"rule-card-title\">&#9986; 3. Bruchterme k\u00fcrzen &amp; vereinfachen</div>";
+  h+="<p style=\"font-size:.85rem;color:var(--muted);margin-bottom:.55rem\">Aus Multiplikationen (Produkten) darf frei gek\u00fcrzt werden: Z\u00e4hler und Nenner werden durch gemeinsame Faktoren geteilt.</p>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{49xy}{7y}")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("\\dfrac{49}{7} \\cdot x \\cdot \\dfrac{y}{y} = 7x")+"</div><div class=\"rule-action\">49/7=7 und y/y=1</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{12a^2b}{4ab}")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("3 \\cdot a \\cdot 1 = 3a")+"</div><div class=\"rule-action\">Potenzen k\u00fcrzen</div></div></div>";
+  h+="<div class=\"rule-card\"><div class=\"rule-card-title\">&#10134; 4. Summenbr\u00fche aufteilen &amp; k\u00fcrzen</div>";
+  h+="<div class=\"warn-box\"><div class=\"warn-box-title\">&#9888; Die goldene Bruch-Regel: Nicht aus Summen k\u00fcrzen!</div><p style=\"font-size:.82rem\">Aus Summen darf man <strong>niemals</strong> ein einzelnes Glied wegstreichen ("+tex("\\frac{2x+y}{x} \\neq 2+y")+")! Entweder gliedweise aufteilen oder ausklammern.</p></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{2x + y}{x}")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("\\dfrac{2x}{x} + \\dfrac{y}{x} = 2 + \\dfrac{y}{x}")+"</div><div class=\"rule-action\">Gliedweise aufgeteilt</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{x - y}{x}")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("\\dfrac{x}{x} - \\dfrac{y}{x} = 1 - \\dfrac{y}{x}")+"</div><div class=\"rule-action\">x/x = 1</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{a^2 + ab}{a}")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("\\dfrac{a(a + b)}{a} = a + b")+"</div><div class=\"rule-action\">a ausklammern &amp; k\u00fcrzen</div></div></div>";
+  h+="<div class=\"rule-card\"><div class=\"rule-card-title\">&#10006; 5. Multiplikation von Br\u00fchen &amp; Variablen</div>";
+  h+="<p style=\"font-size:.85rem;color:var(--muted);margin-bottom:.55rem\">Multipliziere eine Zahl mit dem Z\u00e4hler oder k\u00fcrze sie vorab gegen den Nenner.</p>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{4x}{5} \\cdot 10")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("4x \\cdot \\dfrac{10}{5} = 4x \\cdot 2 = 8x")+"</div><div class=\"rule-action\">10 durch 5 k\u00fcrzen</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{3}{a} \\cdot 2a")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("\\dfrac{3 \\cdot 2a}{a} = \\dfrac{6a}{a} = 6")+"</div><div class=\"rule-action\">a im Nenner k\u00fcrzen</div></div>";
+  h+="<div class=\"rule-example\"><div class=\"rule-before\">"+texD("\\dfrac{5x}{2} \\cdot \\dfrac{4}{x}")+"</div><div class=\"rule-arrow\">&rArr;</div><div class=\"rule-after\">"+texD("\\dfrac{20x}{2x} = 10")+"</div><div class=\"rule-action\">Bruch \u00d7 Bruch</div></div></div>";
+  h+="</div>";
+  el.innerHTML=h;
+}
 function togglePracticeHint(){var box=document.getElementById("p-hint-box");var btn=document.getElementById("p-hint-btn");if(!box||!btn)return;if(box.style.display==="none"){box.style.display="block";btn.innerHTML="&#128161; Tipp ausblenden";}else{box.style.display="none";btn.innerHTML="&#128161; Tipp anzeigen";}}
 function setPracticeFilter(cat,btn){
   ST.practiceFilter=cat;
@@ -752,6 +790,7 @@ function renderRulesPage(){
 function initApp(){
   renderLearn();
   renderTermsQ();
+  renderTermsRulesPage();
   renderPracticeQ();
   renderProgress();
 }
